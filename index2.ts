@@ -38,3 +38,4 @@ while (opcion !== "4") {
 }
 
 console.log("Programa terminado");
+/*  no entendi muy bien la clase de ayer, hice esto hasta aqui que mas o menos entendi cada funcion con ayuda de internet y el material*/
