@@ -29,18 +29,22 @@ const addTask = (title: string) => {
 
 const listTasks = () => {
 
-    for (let i = 0; i < tareas.length; i++) {
+    const tareasFormateadas = tareas.map((task) => {
+
+        const { id, title, completed } = task;
 
         let estado = "pending";
 
-        if (tareas[i].completed === true) {
+        if (completed === true) {
             estado = "completed";
         }
 
-        console.log(
-            `[${tareas[i].id}] ${tareas[i].title} - ${estado}`
-        );
-    }
+        return `[${id}] ${title} - ${estado}`;
+    });
+
+    tareasFormateadas.forEach((tarea) => {
+        console.log(tarea);
+    });
 };
 
 const removeTask = () => {
@@ -54,15 +58,40 @@ const removeTask = () => {
     }
 };
 
+const markCompleted = (id: number) => {
+
+    const tarea = tareas.find((task) => task.id === id);
+
+    if (tarea) {
+        tarea.completed = true;
+        console.log("Tarea completada");
+    } else {
+        console.log("Tarea no encontrada");
+    }
+};
+
+const filterPending = () => {
+
+    return tareas.filter((task) => task.completed === false);
+};
+
+const filterCompleted = () => {
+
+    return tareas.filter((task) => task.completed === true);
+};
+
 let opcion = "";
 
-while (opcion !== "4") {
+while (opcion !== "7") {
 
     console.log("===== GESTOR DE TAREAS =====");
     console.log("1. Agregar tarea");
     console.log("2. Eliminar última tarea");
     console.log("3. Listar tareas");
-    console.log("4. Salir");
+    console.log("4. Marcar tarea como completada");
+    console.log("5. Ver tareas pendientes");
+    console.log("6. Ver tareas completadas");
+    console.log("7. Salir");
 
     opcion = await rl.question("Elige una opción: ");
 
@@ -81,6 +110,28 @@ while (opcion !== "4") {
         listTasks();
 
     } else if (opcion === "4") {
+
+        const idTarea = await rl.question("Ingresa el ID: ");
+
+        markCompleted(Number(idTarea));
+
+    } else if (opcion === "5") {
+
+        const pendientes = filterPending();
+
+        pendientes.forEach((task) => {
+            console.log(`[${task.id}] ${task.title} - pending`);
+        });
+
+    } else if (opcion === "6") {
+
+        const completadas = filterCompleted();
+
+        completadas.forEach((task) => {
+            console.log(`[${task.id}] ${task.title} - completed`);
+        });
+
+    } else if (opcion === "7") {
 
         console.log("Programa terminado");
 
